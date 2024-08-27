@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+	<div>
+		<input type="text" id="name-input">
+		<button id="connect-button">Connect</button>
+	</div>
+	<div>
+		<button id="get-time-button">Get Time</button>
+		<p id="time-display"></p>
+	</div>
+
+	<script>
+		let userId;
+
+		document.getElementById("connect-button").addEventListener("click", () => {
+			userId = document.getElementById("name-input").value;
+			const ev = new EventSource(`http://localhost:3500/sse/${userId}`);
+			ev.addEventListener("timeEvent", (event) => {
+				document.getElementById("time-display").innerHTML = event.data;
+			});
+		});
+
+		document.getElementById("get-time-button").addEventListener("click", async () => {
+			const res = await fetch(`http://localhost:3500/time/${userId}`);
+			// console.log(res)
+			// document.getElementById("time-display").innerHTML = event.data;
+		})
+	</script>
+</body>
+</html>
